@@ -3,17 +3,21 @@
 int main(int argc, char **argv){
 	
 	struct dynamic_array *dynamic_array = create_dynamic_array();
+	printf("STARTING ARRAY SIZE: %d, MAX SIZE: %d\n",dynamic_array->size, dynamic_array->max_size);
+	struct data_element *data;
 	// insert 10 things into the array 
 	for(int i = 0 ; i < 10 ; i++){
 		// create data element
-		struct data_element *data = create_data_element(i,10-i);
+		data = create_data_element(i,10-i);
 		printf("GOT HERE\n");
 		insert(dynamic_array,data);
 		printf("Inserted: ID - %d | KEY - %d\n",data->id,data->key);
 	}
-
+	
+	// SEARCHING NOW 
+	printf("\n\nSEARCHING\n");
 	// search for the 10 items 
-	for(int i = 0 ; i < 10 ; i++){
+	for(int i = 0 ; i <= 10 ; i++){
 		// create data element
 		struct data_element *found = search(dynamic_array, i);
 		

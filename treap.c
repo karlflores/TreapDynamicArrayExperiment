@@ -103,14 +103,56 @@ struct node *insert_p(int key, int priority, struct node *root){
 }
 
 // TODO - WRITE DELETE FUNCTION
-struct node *delete(int key, struct node *root){
+struct node *delete(struct node *root, int key){
+	
+	if(!root) return NULL;
+	
+	// first lets find the position of the key;
+	struct node **del_node = search_node(root, key);
+
+	// if the element that needs to be deleted does not exist, the tree stays the same
+	if(!del_node) return root;
+
+	// else we need to delete the node
+		
+	// if the del_node is a leaf, we can immediately delete it 
+	if(!*del_node->left  && !*del_node->right){
+		free(*del_node);
+		*del_node = NULL;
+	}
+	// if the node has one child, we can just swap the node with the child and delete the node;
+	else if(!*del_node->left && *del_node->right){
+		struct node *temp = *del_node;
+		*del_node = *del_node->right;
+		free(temp);
+	
+	// if the node has one child, we can just swap the node with the child and delete the node;
+	}else if(!*del_node->right && *del_node->left){
+		struct node *temp = *del_node;
+		*del_node = *del_node->left;
+		free(temp);
+	
+	// if the node has two children we have to rotate the child to a leaf position 
+	}else{
+		if(*del_node->left->key > *del_node->right){
+			// need to rotate left;
+			*del_node = rotate_left(*del_node);
+			// then call delete on the left child 
+			*del_node->left = delete(*del_node->left,key);
+		}else{
+			// need to rotate right to push the left priority to the parent;
+			*del_node = rotate_right(*del_node);
+			// then call delete on the right child which now contains the node that needs to be deleted 
+			*del_node->right = delete(*del_node->right,key);
+		}	
+	}
 	return root;
 }
 
 // standard treap 
-int search(int key, struct node *root){
-	if(!root) return FALSE;
-	if(root->key == key) return TRUE;
+struct node **search_node(struct node *root, int key){
+	if(!root) return NULL;
+	if(root->key == key) return &root;
 	if(root->key > key) return search(key, root->right);
 	return search(key, root->left);
 }

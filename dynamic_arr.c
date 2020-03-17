@@ -1,14 +1,8 @@
 #include "dynamic_arr.h"
 
-struct dynamic_array{
-	struct data_element **array;
-	int size;
-	int max_size;
-};
-
 struct dynamic_array *create_dynamic_array(){
 	// start off with one element
-	struct dynamic_array *array = (struct dynamic_array*)malloc(sizeof(struct dynamic_array*));
+	struct dynamic_array *array = (struct dynamic_array*)malloc(sizeof(struct dynamic_array));
 	assert(array);
 
 	// allocate the initial array; 
@@ -28,8 +22,14 @@ void insert(struct dynamic_array *array, struct data_element *data_element){
 
 // push back operation 
 void push_back(struct dynamic_array *array, struct data_element *data_element){
+	printf("ARRAY SIZE ON CALL : %d\n",array->size);
 	printf("INSERTING\n");
-	if(array->size == array->max_size){
+	if(!array){
+		printf("ERROR\n");
+		return;
+	}
+
+	if(array->size >= array->max_size){
 		// 
 		printf("UPDATED ARRAY SIZE FROM %D TO",array->max_size);
 		// update max size 
@@ -49,23 +49,28 @@ void push_back(struct dynamic_array *array, struct data_element *data_element){
 	}
 
 	//insert the element at the end of the array 
-	array->array[array->size-1] = data_element;
+	
+	if(array->size == 0) array->array[0] = data_element;
+	else array->array[array->size-1] = data_element;
 	array->size++;
 	printf("ARRAY SIZE: %d\n",array->size);
 }
 
 int search_idx(struct dynamic_array *array, int key){
 	if(!array) return NOT_FOUND;
-	
+	printf("ARRAY SIZE: %d\n",array->size);
+		
 	//linear search the array 
-	for(int i = 0 ; i < array->size ; i++)
+	for(int i = 0 ; i < array->size; i++){
 		if(array->array[i]->key == key) return i;
+	}
 
 	return NOT_FOUND;
 }
 
 struct data_element *search(struct dynamic_array *array, int key){
 	int idx = search_idx(array, key);
+	printf("FOUND %d AT INDEX: %d\n",key,idx);
 	return idx != NOT_FOUND ? array->array[idx] : NULL;
 }
 
