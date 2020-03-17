@@ -1,25 +1,18 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <assert.h>
-#include <data.h> 
-
-#define NOT_FOUND -1
+#include "dynamic_arr.h"
 
 struct dynamic_array{
-	struct data_element *array;
+	struct data_element **array;
 	int size;
 	int max_size;
 };
 
-struct dynamic_array *create_dynamic_array();
-
 struct dynamic_array *create_dynamic_array(){
 	// start off with one element
-	struct dynamic_array *array = (struct dynamic_array*)malloc(sizeof(struct dynamic_array));
-	assert(dynamic_array);
+	struct dynamic_array *array = (struct dynamic_array*)malloc(sizeof(struct dynamic_array*));
+	assert(array);
 
 	// allocate the initial array; 
-	array->array = (int *)malloc(sizeof(int));
+	array->array = (struct data_element **)malloc(sizeof(struct data_element*));
 	assert(array->array);
 
 	// set the size and max_size;
@@ -35,12 +28,14 @@ void insert(struct dynamic_array *array, struct data_element *data_element){
 
 // push back operation 
 void push_back(struct dynamic_array *array, struct data_element *data_element){
-
+	printf("INSERTING\n");
 	if(array->size == array->max_size){
+		// 
+		printf("UPDATED ARRAY SIZE FROM %D TO",array->max_size);
 		// update max size 
 		array->max_size*=2;
-		struct data_element *new_array = (struct data_element*)malloc(
-						sizeof(data_element)*array->max_size);
+		struct data_element **new_array = (struct data_element**)malloc(
+						sizeof(struct data_element*)*array->max_size);
 
 		// copy all elements into new array; 
 		for(int i = 0 ; i < array->size ; i++){
@@ -50,11 +45,13 @@ void push_back(struct dynamic_array *array, struct data_element *data_element){
 		// delete old array and replace with new
 		free(array->array);
 		array->array = new_array;
+		printf(" %D\n",array->max_size);
 	}
 
 	//insert the element at the end of the array 
-	array->array[size-1] = data_element;
+	array->array[array->size-1] = data_element;
 	array->size++;
+	printf("ARRAY SIZE: %d\n",array->size);
 }
 
 int search_idx(struct dynamic_array *array, int key){
@@ -67,9 +64,9 @@ int search_idx(struct dynamic_array *array, int key){
 	return NOT_FOUND;
 }
 
-int search(struct dynamic_array *array, int key){
+struct data_element *search(struct dynamic_array *array, int key){
 	int idx = search_idx(array, key);
-	return search_idx != NOT_FOUND ? array->array[idx] : NULL;
+	return idx != NOT_FOUND ? array->array[idx] : NULL;
 }
 
 void delete(struct dynamic_array *array, int key){
@@ -88,11 +85,12 @@ void delete(struct dynamic_array *array, int key){
 
 	// test if we need to resize array 
 	if(array->size < array->max_size / 4){
+		printf("UPDATED ARRAY SIZE FROM %D TO",array->max_size);
 		// make a smaller array and copy elements 
 		// update max size 
 		array->max_size/=2;
-		struct data_element *new_array = (struct data_element*)malloc(
-						sizeof(data_element)*array->max_size);
+		struct data_element **new_array = (struct data_element**)malloc(
+						sizeof(struct data_element*)*array->max_size);
 
 		// copy all elements into new array; 
 		for(int i = 0 ; i < array->size ; i++){
@@ -102,6 +100,7 @@ void delete(struct dynamic_array *array, int key){
 		// delete old array and replace with new
 		free(array->array);
 		array->array = new_array;
+		printf(" %D\n",array->max_size);
 	}
 }
 
