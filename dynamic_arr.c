@@ -12,11 +12,15 @@ struct dynamic_array *create_dynamic_array(){
 	// set the size and max_size;
 	array->size = 0;
 	array->max_size = 1;
+
+	array->search = &da_search;
+	array->delete = &da_delete;
+	array->insert = &da_insert;
 	return array;
 }
 
 // insert an element into the dynamic array;
-void insert(struct dynamic_array *array, struct data_element *data_element){
+void da_insert(struct dynamic_array *array, struct data_element *data_element){
 	push_back(array, data_element);
 }
 
@@ -72,7 +76,7 @@ struct data_element *search(struct dynamic_array *array, int key){
 	return idx != NOT_FOUND ? array->array[idx] : NULL;
 }
 
-void delete(struct dynamic_array *array, int key){
+void da_delete(struct dynamic_array *array, int key){
 	// search for the poistion 
 	int idx = search_idx(array, key);
 	if(idx == NOT_FOUND) return;

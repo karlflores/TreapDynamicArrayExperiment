@@ -9,5 +9,11 @@ ht:
 	gcc -Wall -c data.c
 	gcc -Wall -c hashtable.c
 	gcc -Wall -o main hashtable.o main.o data.o
+gen: 
+	gcc -Wall -c gentest.c
+	gcc -Wall -c generator.c
+	gcc -Wall -c data.c
+	gcc -Wall -c hashtable.c
+	gcc -Wall -o gentest hashtable.o generator.o gentest.o data.o
 clean:
 	rm -rf *.o main 

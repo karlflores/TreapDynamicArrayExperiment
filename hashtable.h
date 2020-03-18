@@ -24,15 +24,19 @@ struct hash_table{
 	int max_elements;
 	int load_factor; 
 	int table_size;
+	
+	void (*set)(struct hash_table *,struct data_element *);
+	int (*get)(struct hash_table *,int);
+	int (*delete)(struct hash_table *,int);
 };
 
 struct hash_table *create_hash_table(int load_capacity);
 void delete_hash_table(struct hash_table *ht);
 int primary_hash(struct hash_table *ht, int id);
 int secondary_hash(int id); 
-void set(struct hash_table *ht, struct data_element *data);
-int delete(struct hash_table *ht, int id);
-int get(struct hash_table *ht, int id); 
+void ht_set(struct hash_table *ht, struct data_element *data);
+int ht_del(struct hash_table *ht, int id);
+int ht_get(struct hash_table *ht, int id); 
 int next_prime(int n);
 int is_prime(int n);
 

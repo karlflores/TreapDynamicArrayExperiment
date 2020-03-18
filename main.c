@@ -34,12 +34,12 @@ int main(int argc, char **argv){
 	}
 	
 	*/
-	int max = 100000;
+	int max = 2000000;
 	int keys[max];
 	// test the hash table 
 	struct hash_table *ht = create_hash_table(75);
 	for(int i = 0 ; i < max ; i++){
-		int r = (int)rand() % 2312;
+		int r = (int)rand() % max;
 		keys[i] = r;
 		set(ht,create_data_element(r,i)); 
 	}

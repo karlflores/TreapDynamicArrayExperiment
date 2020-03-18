@@ -11,6 +11,9 @@ struct hash_table *create_hash_table(int load_factor){
 	ht->table_size = INIT_SIZE;
 	ht->load_factor = load_factor;
 	ht->n_filled = 0;
+	ht->delete = &ht_del;
+	ht->set = &ht_set;
+	ht->get = &ht_get;
 
 	// allocate the table 
 	ht->table = (struct cell *)malloc(sizeof(struct cell)*INIT_SIZE);
@@ -25,7 +28,7 @@ struct hash_table *create_hash_table(int load_factor){
 	return ht;
 }
 
-void set(struct hash_table *ht, struct data_element *data){
+void ht_set(struct hash_table *ht, struct data_element *data){
 	// see if we need to resize the hash table first 
 	if(ht->n_filled >= (ht->table_size*ht->load_factor)/100){
 
@@ -87,7 +90,7 @@ void set(struct hash_table *ht, struct data_element *data){
 	ht->n_filled++;
 }
 
-int get(struct hash_table *ht, int id){
+int ht_get(struct hash_table *ht, int id){
 	int p_hash = primary_hash(ht, id);
 	int s_hash = secondary_hash(id);	
 
@@ -103,7 +106,7 @@ int get(struct hash_table *ht, int id){
 	return -1;
 }
 
-int delete(struct hash_table *ht, int id){
+int ht_del(struct hash_table *ht, int id){
 	int p_hash = primary_hash(ht, id);
 	int s_hash = secondary_hash(id);	
 
@@ -118,6 +121,8 @@ int delete(struct hash_table *ht, int id){
 				ht->table[idx].status = DELETED;	
 				ht->n_filled--;
 				deleted = TRUE;
+				//printf("REMOVED ELEMENT FROM HT (%d,%d)\n",ht->table[idx].data->id,
+				//				ht->table[idx].data->key);
 				break;
 			}	
 		}
@@ -125,7 +130,7 @@ int delete(struct hash_table *ht, int id){
 		i++;
 	}
 	// see if we need to resize the hash table first 
-	if(ht->n_filled <= ht->table_size/4 && ht->table_size > INIT_SIZE){
+	if(ht->n_filled <= ht->table_size/4 && ht->table_size >= INIT_SIZE * 2){
 
 		printf("RESIZING...\n");
 		// resize needed 
