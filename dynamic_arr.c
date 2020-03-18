@@ -50,9 +50,7 @@ void push_back(struct dynamic_array *array, struct data_element *data_element){
 
 	//insert the element at the end of the array 
 	
-	if(array->size == 0) array->array[0] = data_element;
-	else array->array[array->size-1] = data_element;
-	array->size++;
+	array->array[array->size++] = data_element;
 	printf("ARRAY SIZE: %d\n",array->size);
 }
 

@@ -1,7 +1,8 @@
-#include "dynamic_arr.h"
+//#include "dynamic_arr.h"
+#include "hashtable.h"
 
 int main(int argc, char **argv){
-	
+	/*	
 	struct dynamic_array *dynamic_array = create_dynamic_array();
 	printf("STARTING ARRAY SIZE: %d, MAX SIZE: %d\n",dynamic_array->size, dynamic_array->max_size);
 	struct data_element *data;
@@ -32,5 +33,36 @@ int main(int argc, char **argv){
 		printf("DELETED ITEM WITH KEY - %d\n",i);
 	}
 	
+	*/
+	int max = 100000;
+	int keys[max];
+	// test the hash table 
+	struct hash_table *ht = create_hash_table(75);
+	for(int i = 0 ; i < max ; i++){
+		int r = (int)rand() % 2312;
+		keys[i] = r;
+		set(ht,create_data_element(r,i)); 
+	}
+	printf("INSERTED %d ELEMENTS\n",max);
+	int found = 0;
+	for(int i = 0 ; i < max ; i++){
+		int key = get(ht, keys[i]);
+		if(key > -1) found++;
+	}
+	printf("FOUND %d KEYS\n",found);
+	int deleted = 0;
+	for(int i = 0 ; i < max ; i++){
+		if(delete(ht, keys[i])) deleted++;
+	}
+	printf("DELETED %d KEYS\n",deleted);
+	found = 0;
+	for(int i = 0 ; i < max ; i++){
+		int key = get(ht, keys[i]);
+		if(key > -1) found++;
+	}
+	printf("FOUND %d KEYS\n",found);
+
+
+
 	return 0;
 }
