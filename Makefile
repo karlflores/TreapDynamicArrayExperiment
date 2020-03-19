@@ -15,5 +15,11 @@ gen:
 	gcc -Wall -c data.c
 	gcc -Wall -c hashtable.c
 	gcc -Wall -o gentest hashtable.o generator.o gentest.o data.o
+treap:
+	gcc -Wall -c treap_test.c
+	gcc -Wall -c treap.c
+	gcc -Wall -c data.c
+	gcc -Wall -o main treap.o treap_test.o data.o
+
 clean:
 	rm -rf *.o main 

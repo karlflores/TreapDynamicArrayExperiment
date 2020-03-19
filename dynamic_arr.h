@@ -11,6 +11,7 @@ struct dynamic_array{
 	struct data_element **array;
 	int size;
 	int max_size;
+
 	void (*insert)(struct dynamic_array*, struct data_element*);
 	void (*delete)(struct dynamic_array*, int);
 	struct data_element* (*search)(struct dynamic_array*, int);

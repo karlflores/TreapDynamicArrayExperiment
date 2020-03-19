@@ -1,5 +1,131 @@
 #include "treap.h"
 
+struct treap *create_treap(){
+	struct treap *treap = (struct treap *)malloc(sizeof(struct treap));
+	assert(treap);
+	
+	// set the root to be null first;
+	treap->root = NULL;
+
+	treap->insert = &treap_insert;
+	treap->delete = &treap_delete;
+	treap->search = &treap_search;
+	return treap;	
+}
+
+void treap_insert(struct treap *treap, struct data_element *data){
+	// don't allow the treap to store NULL values 
+	if(!data) return;
+
+	// treap has to exist inorder to insert something into it;
+	if(!treap) return;
+
+	treap->root = insert_node(treap->root,data);
+}
+
+void treap_delete(struct treap *treap, int key){
+	if(!treap) return;
+
+	treap->root = delete_node(treap->root,key);
+}
+
+int treap_search(struct treap *treap, int key){
+	if(!treap) FALSE;
+
+	return search_node(treap->root,key);
+}
+
+struct node *insert_node(struct node *root, struct data_element *data){
+	// normal bst insert 
+	if(!data) return NULL;
+	if(!root) return create_node(data);
+	
+	// keep track of what side of the current root we have inserted
+	// the node into
+	// insert to the leaf position
+	if(data->key >= root->data->key){
+
+		root->right = insert_node(root->right, data);
+		//printf("insert right\n");
+
+		// fix the heap property via rotations
+		if(root->right->priority < root->priority || 
+					(root->right->priority == root->priority && 
+					root->right->data->id < root->data->id)){
+			// rotate left
+			//printf("rotate left\n");
+			root = rotate_left(root);
+		}
+	}else{
+		root->left = insert_node(root->left, data);
+		//printf("insert left\n");
+		if(root->left->priority < root->priority || 
+					(root->left->priority == root->priority && 
+					root->left->data->id < root->data->id)){
+			// rotate left
+			//printf("rotate right\n");
+			root = rotate_right(root);
+		}
+	}
+
+	return root;
+}
+
+// TODO - WRITE DELETE FUNCTION
+struct node *delete_node(struct node *root, int key){
+	
+	if(!root) return NULL;
+	
+	if(key > root->data->key) root->right = delete_node(root->right,key);
+	else if (key < root->data->key) root->left = delete_node(root->left,key);
+	else{ 	
+		// at this stage, we know root is the node we want to delete
+		
+		// if the del_node is a leaf, we can immediately delete it 
+		if(!root->left  && !root->right){
+			free(root->data);
+			free(root);
+			return NULL;
+		}
+		// if the node has one child, we can just swap the node with the child and delete the node;
+		else if(!root->left && root->right){
+			struct node *temp = root->right;
+			free(root->data);
+			free(root);	
+			root = temp;
+		// if the node has one child, we can just swap the node with the child and delete the node;
+		}else if(!root->right && root->left){
+			struct node *temp = root->left;
+			free(root->data);
+			free(root);
+			root = temp;
+		// if the node has two children we have to rotate the child to a leaf position 
+		}else{
+			// rotate in the opposite direction to side which has the lowest priority
+			if(root->left->priority < root->right->priority){
+				// need to rotate left;
+				root = rotate_right(root);
+				// then call delete on the right child 
+				root->right = delete_node(root->right,key);
+			}else{
+				// need to rotate right to push the left priority to the parent;
+				root = rotate_left(root);
+				// then call delete on the right child which now contains the node that needs to be deleted 
+				root->left = delete_node(root->left,key);
+			}	
+		}
+	}
+	return root;
+}
+
+// standard treap 
+int search_node(struct node *root, int key){
+	if(!root) return FALSE;
+	if(root->data->key == key) return TRUE;
+	if(key >= root->data->key) return search_node(root->right,key);
+	return search_node(root->left,key);
+}
+
 struct node *create_node(struct data_element *data){
 	struct node *new_node = (struct node*)malloc(sizeof(struct node)); 
 	assert(new_node);
@@ -7,7 +133,7 @@ struct node *create_node(struct data_element *data){
 	new_node->left = NULL;
 	new_node->right = NULL;
 	// assign a priority to the node when created
-	new_node->priority = (int)(rand()*MAX_PRIORITY);
+	new_node->priority = (int)(rand()%MAX_PRIORITY+1);
 	
 	return new_node;
 }
@@ -34,89 +160,9 @@ struct node *rotate_right(struct node *root){
 	return new_root;
 }
 
-struct node *insert(struct node *root, struct data_element *data){
-	// normal bst insert 
-	if(!data) return NULL;
-	if(!root) return create_node(data);
-	
-	// keep track of what side of the current root we have inserted
-	// the node into
-	// insert to the leaf position
-	if(data->key >= root->data->key){
-		root->right = insert(root->right, data);
-		printf("insert right\n");
-		if(root->right->priority > root->priority || 
-					(root->right->priority == root->priority && 
-					root->right->data->id < root->data->id)){
-			// rotate left
-			root = rotate_left(root);
-			printf("rotate left\n");
-		}
-	}else{
-		root->left = insert(root->left, data);
-		printf("insert left\n");
-		if(root->left->priority > root->priority || 
-					(root->left->priority == root->priority && 
-					root->left->data->id < root->data->id)){
-			// rotate left
-			root = rotate_left(root);
-			printf("rotate right\n");
-		}
-	}
-
-	return root;
+void inorder(struct node *root){
+	if(!root) return;
+	inorder(root->left);
+	printf("| (%d,%d) ",root->data->id,root->data->key);
+	inorder(root->right);
 }
-
-// TODO - WRITE DELETE FUNCTION
-struct node *delete(struct node *root, int key){
-	
-	if(!root) return NULL;
-	
-	if(root->data->key > key) root->right = delete(root->right,key);
-	else if (root->data->key < key) root->left = delete(root->left,key);
-	else{ 	
-		// at this stage, we know root is the node we want to delete
-		
-		// if the del_node is a leaf, we can immediately delete it 
-		if(!root->left  && !root->right){
-			free(root);
-			return NULL;
-		}
-		// if the node has one child, we can just swap the node with the child and delete the node;
-		else if(!root->left && root->right){
-			struct node *temp = root;
-			root = root->right;
-			free(temp);	
-		// if the node has one child, we can just swap the node with the child and delete the node;
-		}else if(!root->right && root->left){
-			struct node *temp = root;
-			root = root->left;
-			free(temp);
-		// if the node has two children we have to rotate the child to a leaf position 
-		}else{
-
-			// rotate in the opposite direction to side which has the lowest priority
-			if(root->left->priority < root->right->priority){
-				// need to rotate left;
-				root = rotate_right(root);
-				// then call delete on the right child 
-				root->right = delete(root->right,key);
-			}else{
-				// need to rotate right to push the left priority to the parent;
-				root = rotate_left(root);
-				// then call delete on the right child which now contains the node that needs to be deleted 
-				root->right = delete(root->right,key);
-			}	
-		}
-	}
-	return root;
-}
-
-// standard treap 
-struct node *search(struct node *root, int key){
-	if(!root) return NULL;
-	if(root->data->key == key) return root;
-	if(root->data->key > key) return search(root->right,key);
-	return search(root->left,key);
-}
-

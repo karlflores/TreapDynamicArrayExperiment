@@ -41,28 +41,25 @@ int main(int argc, char **argv){
 	for(int i = 0 ; i < max ; i++){
 		int r = (int)rand() % max;
 		keys[i] = r;
-		set(ht,create_data_element(r,i)); 
+		ht->set(ht,create_data_element(r,i)); 
 	}
 	printf("INSERTED %d ELEMENTS\n",max);
 	int found = 0;
 	for(int i = 0 ; i < max ; i++){
-		int key = get(ht, keys[i]);
+		int key = ht->get(ht, keys[i]);
 		if(key > -1) found++;
 	}
 	printf("FOUND %d KEYS\n",found);
 	int deleted = 0;
 	for(int i = 0 ; i < max ; i++){
-		if(delete(ht, keys[i])) deleted++;
+		if(ht->delete(ht, keys[i])) deleted++;
 	}
 	printf("DELETED %d KEYS\n",deleted);
 	found = 0;
 	for(int i = 0 ; i < max ; i++){
-		int key = get(ht, keys[i]);
+		int key = ht->get(ht, keys[i]);
 		if(key > -1) found++;
 	}
 	printf("FOUND %d KEYS\n",found);
-
-
-
 	return 0;
 }
