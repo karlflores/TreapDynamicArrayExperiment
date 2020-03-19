@@ -5,8 +5,6 @@
 
 #define NOT_FOUND -1
 
-struct dynamic_array;
-
 struct dynamic_array{
 	struct data_element **array;
 	int size;

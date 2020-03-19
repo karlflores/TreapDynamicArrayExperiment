@@ -35,6 +35,9 @@ struct data_element gen_insertion(struct generator *g){
 }
 
 int gen_deletion(struct generator *g){
+	// if our id_next is still at 1 then we have not inserted anything , thus generate a random key 
+	if(g->id_next == 1) return rand()%MAX_KEY + 1;
+
 	// generate a random id from 1 to id next -1
 	int id = rand()%(g->id_next-1) + 1;
 

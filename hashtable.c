@@ -32,12 +32,12 @@ void ht_set(struct hash_table *ht, struct data_element *data){
 	// see if we need to resize the hash table first 
 	if(ht->n_filled >= (ht->table_size*ht->load_factor)/100){
 
-		printf("RESIZING...\n");
+		//printf("RESIZING...\n");
 		// resize needed 
 		int new_size = next_prime(ht->table_size*2);
 		int old_size = ht->table_size;
-		printf("OLD SIZE : %d\n", old_size);
-		printf("NEW SIZE : %d\n", new_size);
+		//printf("OLD SIZE : %d\n", old_size);
+		//printf("NEW SIZE : %d\n", new_size);
 		ht->table_size = new_size;
 
 		// make a new table; 
@@ -132,12 +132,12 @@ int ht_del(struct hash_table *ht, int id){
 	// see if we need to resize the hash table first 
 	if(ht->n_filled <= ht->table_size/4 && ht->table_size >= INIT_SIZE * 2){
 
-		printf("RESIZING...\n");
+		//printf("RESIZING...\n");
 		// resize needed 
 		int new_size = next_prime(ht->table_size/2);
 		int old_size = ht->table_size;
-		printf("OLD SIZE : %d\n", old_size);
-		printf("NEW SIZE : %d\n", new_size);
+		//printf("OLD SIZE : %d\n", old_size);
+		//printf("NEW SIZE : %d\n", new_size);
 		ht->table_size = new_size;
 
 		// make a new table; 

@@ -26,16 +26,16 @@ void da_insert(struct dynamic_array *array, struct data_element *data_element){
 
 // push back operation 
 void push_back(struct dynamic_array *array, struct data_element *data_element){
-	printf("ARRAY SIZE ON CALL : %d\n",array->size);
-	printf("INSERTING\n");
+	//printf("ARRAY SIZE ON CALL : %d\n",array->size);
+	//printf("INSERTING\n");
 	if(!array){
-		printf("ERROR\n");
+		//printf("ERROR\n");
 		return;
 	}
 
 	if(array->size >= array->max_size){
 		// 
-		printf("UPDATED ARRAY SIZE FROM %D TO",array->max_size);
+		//printf("UPDATED ARRAY SIZE FROM %D TO",array->max_size);
 		// update max size 
 		array->max_size*=2;
 		struct data_element **new_array = (struct data_element**)malloc(
@@ -49,18 +49,18 @@ void push_back(struct dynamic_array *array, struct data_element *data_element){
 		// delete old array and replace with new
 		free(array->array);
 		array->array = new_array;
-		printf(" %D\n",array->max_size);
+		//printf(" %D\n",array->max_size);
 	}
 
 	//insert the element at the end of the array 
 	
 	array->array[array->size++] = data_element;
-	printf("ARRAY SIZE: %d\n",array->size);
+	//printf("ARRAY SIZE: %d\n",array->size);
 }
 
 int search_idx(struct dynamic_array *array, int key){
 	if(!array) return NOT_FOUND;
-	printf("ARRAY SIZE: %d\n",array->size);
+	//printf("ARRAY SIZE: %d\n",array->size);
 		
 	//linear search the array 
 	for(int i = 0 ; i < array->size; i++){
@@ -70,9 +70,9 @@ int search_idx(struct dynamic_array *array, int key){
 	return NOT_FOUND;
 }
 
-struct data_element *search(struct dynamic_array *array, int key){
+struct data_element *da_search(struct dynamic_array *array, int key){
 	int idx = search_idx(array, key);
-	printf("FOUND %d AT INDEX: %d\n",key,idx);
+	//printf("FOUND %d AT INDEX: %d\n",key,idx);
 	return idx != NOT_FOUND ? array->array[idx] : NULL;
 }
 
@@ -84,15 +84,15 @@ void da_delete(struct dynamic_array *array, int key){
 	// swap the element with the back element;
 	swap(&array->array[idx], &array->array[array->size-1]);
 
-	// free the element 
-	free(array->array[array->size-1]);
+	// delete the element 
+	array->array[array->size-1] = NULL;
 
 	// update params
 	array->size--;
 
 	// test if we need to resize array 
 	if(array->size < array->max_size / 4){
-		printf("UPDATED ARRAY SIZE FROM %D TO",array->max_size);
+		//printf("UPDATED ARRAY SIZE FROM %D TO",array->max_size);
 		// make a smaller array and copy elements 
 		// update max size 
 		array->max_size/=2;
@@ -107,7 +107,7 @@ void da_delete(struct dynamic_array *array, int key){
 		// delete old array and replace with new
 		free(array->array);
 		array->array = new_array;
-		printf(" %D\n",array->max_size);
+		//printf(" %D\n",array->max_size);
 	}
 }
 

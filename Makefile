@@ -1,3 +1,12 @@
+all: 
+	gcc -Wall -c ds_expr.c
+	gcc -Wall -c dynamic_arr.c
+	gcc -Wall -c hashtable.c
+	gcc -Wall -c treap.c
+	gcc -Wall -c generator.c
+	gcc -Wall -c data.c
+	gcc -Wall -o ds_expr dynamic_arr.o ds_expr.o data.o treap.o generator.o hashtable.o
+
 da: 
 	gcc -Wall -c main.c
 	gcc -Wall -c dynamic_arr.c

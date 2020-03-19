@@ -33,9 +33,6 @@ int main(int argc, char **argv){
 	   	if(treap) del++;
 	}
 	printf("DELETED %d ELEMENTS | NUM INSERTED = %d\n", found, max);
-	for(int i = 0 ; i < max ; i++){
-		if(treap->search(treap, keys[i])) printf(">> ERROR: found a deleted key\n");
-	}
 	inorder(treap->root);
 
 	return 0;

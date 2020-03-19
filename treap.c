@@ -83,20 +83,17 @@ struct node *delete_node(struct node *root, int key){
 		
 		// if the del_node is a leaf, we can immediately delete it 
 		if(!root->left  && !root->right){
-			free(root->data);
 			free(root);
 			return NULL;
 		}
 		// if the node has one child, we can just swap the node with the child and delete the node;
 		else if(!root->left && root->right){
 			struct node *temp = root->right;
-			free(root->data);
 			free(root);	
 			root = temp;
 		// if the node has one child, we can just swap the node with the child and delete the node;
 		}else if(!root->right && root->left){
 			struct node *temp = root->left;
-			free(root->data);
 			free(root);
 			root = temp;
 		// if the node has two children we have to rotate the child to a leaf position 
