@@ -118,6 +118,7 @@ int ht_del(struct hash_table *ht, int id){
 			if(ht->table[idx].data->id == id){
 				// remove this cell;
 				free(ht->table[idx].data);
+				ht->table[idx].data = NULL;
 				ht->table[idx].status = DELETED;	
 				ht->n_filled--;
 				deleted = TRUE;

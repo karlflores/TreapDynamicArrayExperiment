@@ -2,9 +2,11 @@
 
 #define LOAD_FACTOR 75
 #define MAX_KEY 10000000 
+
 struct generator{
 	int id_next;	
 	struct hash_table *generated;
+	int *data_generated;
 	struct generator* (*create)(void);
 	struct data_element (*gen_insertion)(struct generator *);
 	int (*gen_search)(struct generator *);

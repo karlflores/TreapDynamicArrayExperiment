@@ -46,3 +46,5 @@ void treap_insert(struct treap *treap, struct data_element *data);
 
 
 void inorder(struct node *root);
+void delete_treap_nodes(struct node *root);
+void delete_treap(struct treap *treap);

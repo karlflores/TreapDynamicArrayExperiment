@@ -10,6 +10,7 @@
 #define TRUE 1
 #define FALSE 0
 
+#define MAX_TABLE_SIZE 2000000
 #define INIT_SIZE 1019
 #define SECOND_PRIME 29
 

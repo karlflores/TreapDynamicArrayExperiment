@@ -76,6 +76,7 @@ struct node *delete_node(struct node *root, int key){
 	
 	if(!root) return NULL;
 	
+	// recurse down the tree until we find the node we want to delete	
 	if(key > root->data->key) root->right = delete_node(root->right,key);
 	else if (key < root->data->key) root->left = delete_node(root->left,key);
 	else{ 	
@@ -91,6 +92,7 @@ struct node *delete_node(struct node *root, int key){
 			struct node *temp = root->right;
 			free(root);	
 			root = temp;
+
 		// if the node has one child, we can just swap the node with the child and delete the node;
 		}else if(!root->right && root->left){
 			struct node *temp = root->left;
@@ -115,7 +117,7 @@ struct node *delete_node(struct node *root, int key){
 	return root;
 }
 
-// standard treap 
+// standard bst search
 int search_node(struct node *root, int key){
 	if(!root) return FALSE;
 	if(root->data->key == key) return TRUE;
@@ -123,6 +125,7 @@ int search_node(struct node *root, int key){
 	return search_node(root->left,key);
 }
 
+// helper function to create a node in the treap 
 struct node *create_node(struct data_element *data){
 	struct node *new_node = (struct node*)malloc(sizeof(struct node)); 
 	assert(new_node);
@@ -135,6 +138,7 @@ struct node *create_node(struct data_element *data){
 	return new_node;
 }
 
+/* ROTATION FUNCTIONS */
 struct node *rotate_left(struct node *root){
 	if(!root) return NULL;
 	if(!root->left && !root->right) return root;
@@ -157,9 +161,25 @@ struct node *rotate_right(struct node *root){
 	return new_root;
 }
 
+
+/* UTIL FUNCTIONS */
 void inorder(struct node *root){
 	if(!root) return;
 	inorder(root->left);
 	printf("| (%d,%d) ",root->data->id,root->data->key);
 	inorder(root->right);
+}
+
+void delete_treap_nodes(struct node *root){
+	if(!root) return;
+	delete_treap_nodes(root->left);
+	delete_treap_nodes(root->right);
+	free(root);
+
+}
+
+void delete_treap(struct treap *treap){
+	if(!treap) return;
+	delete_treap_nodes(treap->root);
+	free(treap);
 }

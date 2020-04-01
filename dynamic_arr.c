@@ -111,6 +111,13 @@ void da_delete(struct dynamic_array *array, int key){
 	}
 }
 
+void delete_dynamic_array(struct dynamic_array *array){
+		if(!array) return;
+		free(array->array);
+		free(array);
+
+}
+
 void swap(struct data_element **a, struct data_element **b){
 	struct data_element **temp;
 	temp = a;
