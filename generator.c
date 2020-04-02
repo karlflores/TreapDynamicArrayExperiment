@@ -7,10 +7,10 @@ struct generator *create_generator(void){
 	// create the hashtable 
 	struct hash_table *ht = create_hash_table(LOAD_FACTOR);
 	assert(ht);
-
 	gen->id_next = 1;
 	gen->generated = ht;
-	gen->create = &create_generator;
+	
+	// assign the functions pointers 
 	gen->gen_deletion = &gen_deletion;
 	gen->gen_insertion = &gen_insertion;
 	gen->gen_search = &gen_search;

@@ -36,9 +36,12 @@ int main(int argc, char **argv){
 		fprintf(stderr,"ERROR: ./ds_expr [expr_param] [test_number]");
 		return -1;
 	}
+
+	// IO
 	int experiment = atoi(argv[2]);
 	int expr_param = atoi(argv[1]);
-
+	
+	// create the data structures and generators
 	struct treap *treap = create_treap();
 	struct dynamic_array *dyn_arr = create_dynamic_array();
 	struct generator *g = create_generator();
@@ -60,7 +63,6 @@ int main(int argc, char **argv){
 		case 2:
 			queries = (struct query*)malloc(sizeof(struct query)*ARR_DEFAULT);
 			assert(queries);
-
 			experiment_2(queries,ARR_DEFAULT,g,expr_param);
 			q_size = ARR_DEFAULT;
 			break;
@@ -81,35 +83,19 @@ int main(int argc, char **argv){
 	}
 
 	// now we can perform the experiments
-
-	struct timeval t;
-	if(experiment == 1){
-   		gettimeofday(&t,NULL);
-		before = t.tv_usec + t.tv_sec * 1000000;
-	} else before = get_time();
-
+	before = get_time();
 	execute(treap,TREAP,queries,q_size);
-
-	if(experiment == 1){
-   		gettimeofday(&t,NULL);
-		after = t.tv_usec + t.tv_sec * 1000000;
-	} else after = get_time();
+	after = get_time();
 	
 	printf("%d, ",after - before);
 
-	if(experiment == 1){
-   		gettimeofday(&t,NULL);
-		before = t.tv_usec + t.tv_sec * 1000000;
-	} else before = get_time();
-
+	before = get_time();
 	execute(dyn_arr,DYNAMIC_ARRAY,queries,q_size);	
-
-	if(experiment == 1){
-   		gettimeofday(&t,NULL);
-		after = t.tv_usec + t.tv_sec * 1000000;
-	} else after = get_time();
+	after = get_time();
 
 	printf("%d",after - before);
+
+	// delete all tings 
 	delete_generator(g);
 	delete_treap(treap);
 	delete_dynamic_array(dyn_arr);
@@ -122,6 +108,9 @@ int get_time(){
    	gettimeofday(&t,NULL);
 	return t.tv_usec / 1000 + t.tv_sec * 1000;
 }
+
+
+/*EXPERIMENT FUNCTION IMPLEMENTED AS PER IMPLEMENTATION SPEC */
 
 void experiment_1(struct query *Q, int size, struct generator *g){
 	for(int i = 0 ; i < size ; i++){
@@ -164,6 +153,30 @@ void experiment_3(struct query *Q, int size, struct generator *g, int pcent_10){
 	}
 }
 
+void experiment_4(struct query *Q, int size, struct generator *g){	
+	int del_event;
+	for(int i = 0 ; i < size ; i++){
+		del_event = rand()%MAX_DRAW + 1;
+		// if the event is less than the expectation 
+		if(del_event < 5 * MAX_DRAW / 100){
+			// delete
+			Q[i].key = g->gen_deletion(g);	
+			Q[i].type = 'd';
+		}else if(del_event < 10 * MAX_DRAW / 100){
+			// search 
+			Q[i].key = g->gen_search(g);	
+			Q[i].type = 's';
+		}else{
+			Q[i].data = g->gen_insertion(g);
+			Q[i].type = 'i';
+		}
+	}
+}
+
+// Execute the sequence of operations on the supplied data structure
+// pass in a pointer to the ds as well as an enum value represening the type of 
+// DS you are passing in 
+// pass in the sequence of operations as well as the input size 
 void execute(void* ds, enum DS type, struct query *Q, int size){
 	if(type == TREAP){
 		for(int i = 0 ; i < size ; i++){
@@ -195,24 +208,4 @@ void execute(void* ds, enum DS type, struct query *Q, int size){
 		}
 	
 	}	
-}
-
-void experiment_4(struct query *Q, int size, struct generator *g){	
-	int del_event;
-	for(int i = 0 ; i < size ; i++){
-		del_event = rand()%MAX_DRAW + 1;
-		// if the event is less than the expectation 
-		if(del_event < 5 * MAX_DRAW / 100){
-			// delete
-			Q[i].key = g->gen_deletion(g);	
-			Q[i].type = 'd';
-		}else if(del_event < 10 * MAX_DRAW / 100){
-			// search 
-			Q[i].key = g->gen_search(g);	
-			Q[i].type = 's';
-		}else{
-			Q[i].data = g->gen_insertion(g);
-			Q[i].type = 'i';
-		}
-	}
 }

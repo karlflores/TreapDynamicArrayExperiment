@@ -1,5 +1,6 @@
 #include "treap.h"
 
+// create the treap 
 struct treap *create_treap(){
 	struct treap *treap = (struct treap *)malloc(sizeof(struct treap));
 	assert(treap);
@@ -13,6 +14,15 @@ struct treap *create_treap(){
 	return treap;	
 }
 
+// delete a treap 
+void delete_treap(struct treap *treap){
+	if(!treap) return;
+	delete_treap_nodes(treap->root);
+	free(treap);
+}
+
+/* TREAP INTERFACE FUNCTION WRAPPERS */
+// insert into the treap 
 void treap_insert(struct treap *treap, struct data_element *data){
 	// don't allow the treap to store NULL values 
 	if(!data) return;
@@ -35,6 +45,8 @@ int treap_search(struct treap *treap, int key){
 	return search_node(treap->root,key);
 }
 
+
+/* Search functions that work on the node */
 struct node *insert_node(struct node *root, struct data_element *data){
 	// normal bst insert 
 	if(!data) return NULL;
@@ -46,24 +58,22 @@ struct node *insert_node(struct node *root, struct data_element *data){
 	if(data->key >= root->data->key){
 
 		root->right = insert_node(root->right, data);
-		//printf("insert right\n");
 
-		// fix the heap property via rotations
+		// once we have inserted the element, we can fix the heap 
+		// as the node is on the right, check if the heap property is violated 
+		// and rotate left if needed
 		if(root->right->priority < root->priority || 
 					(root->right->priority == root->priority && 
 					root->right->data->id < root->data->id)){
-			// rotate left
-			//printf("rotate left\n");
 			root = rotate_left(root);
 		}
 	}else{
 		root->left = insert_node(root->left, data);
-		//printf("insert left\n");
 		if(root->left->priority < root->priority || 
 					(root->left->priority == root->priority && 
 					root->left->data->id < root->data->id)){
-			// rotate left
-			//printf("rotate right\n");
+
+			// rotate right to fix heap property 
 			root = rotate_right(root);
 		}
 	}
@@ -71,9 +81,10 @@ struct node *insert_node(struct node *root, struct data_element *data){
 	return root;
 }
 
-// TODO - WRITE DELETE FUNCTION
+// Delete a node from the heap 
 struct node *delete_node(struct node *root, int key){
 	
+	// if the root does not exist we dont need to do anything 	
 	if(!root) return NULL;
 	
 	// recurse down the tree until we find the node we want to delete	
@@ -104,12 +115,14 @@ struct node *delete_node(struct node *root, int key){
 			if(root->left->priority < root->right->priority){
 				// need to rotate left;
 				root = rotate_right(root);
-				// then call delete on the right child 
+				// our required node now is on the right of the root, 
+				// call delete on the right child 
 				root->right = delete_node(root->right,key);
 			}else{
 				// need to rotate right to push the left priority to the parent;
 				root = rotate_left(root);
-				// then call delete on the right child which now contains the node that needs to be deleted 
+				// then call delete on the right child which now 
+				// contains the node that needs to be deleted 
 				root->left = delete_node(root->left,key);
 			}	
 		}
@@ -141,6 +154,8 @@ struct node *create_node(struct data_element *data){
 /* ROTATION FUNCTIONS */
 struct node *rotate_left(struct node *root){
 	if(!root) return NULL;
+	
+	// can't rotate a leaf node 
 	if(!root->left && !root->right) return root;
 
 	struct node *new_root = root->right;
@@ -152,6 +167,8 @@ struct node *rotate_left(struct node *root){
 
 struct node *rotate_right(struct node *root){
 	if(!root) return NULL;
+
+	// can't rotate a leaf node 
 	if(!root->left && !root->right) return root;
 
 	struct node *new_root = root->left;
@@ -176,10 +193,4 @@ void delete_treap_nodes(struct node *root){
 	delete_treap_nodes(root->right);
 	free(root);
 
-}
-
-void delete_treap(struct treap *treap){
-	if(!treap) return;
-	delete_treap_nodes(treap->root);
-	free(treap);
 }

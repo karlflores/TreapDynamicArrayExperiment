@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include <assert.h> 
 
+// data element structure 
 struct data_element{
 	int id;
 	int key;
