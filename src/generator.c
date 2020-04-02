@@ -33,17 +33,26 @@ struct data_element *gen_element(struct generator *g){
 	struct data_element *data = create_data_element(id,key);
 	g->generated->set(g->generated, data);
 	return data;
-		
-
 }
 
-struct data_element gen_insertion(struct generator *g){
-	return *gen_element(g);
+/*
+ * OPERATION FUNCTION IMPLEMENTATIONS 
+ */
+struct operation gen_insertion(struct generator *g){
+	struct operation op;
+	op.data = *gen_element(g);
+	op.operation = INSERT;
+	return op;
 }
 
-int gen_deletion(struct generator *g){
+struct operation gen_deletion(struct generator *g){
+	struct operation op; 
+	op.operation = DELETE;
 	// if our id_next is still at 1 then we have not inserted anything , thus generate a random key 
-	if(g->id_next == 1) return rand()%MAX_KEY + 1;
+	if(g->id_next == 1){
+		op.key = rand()%MAX_KEY + 1;
+		return op;
+	}
 
 	// generate a random id from 1 to id next -1
 	int id = rand()%(g->id_next-1) + 1;
@@ -52,15 +61,21 @@ int gen_deletion(struct generator *g){
 	int key_found = g->generated->get(g->generated, id);
 	if(key_found <= -1){
 		// have already generated this, therefore delete a random key
-		int key = rand()%MAX_KEY + 1;
-		return key;
+		op.key = rand()%MAX_KEY + 1;
+		return op;
 	}
 	g->generated->delete(g->generated,id);
-	return key_found;
+	
+	// construct the operation 
+	op.key = key_found;
+	return op;
 }
 
-int gen_search(struct generator *g){
-	return rand()%MAX_KEY + 1;
+struct operation gen_search(struct generator *g){
+	struct operation op;
+	op.operation = SEARCH;
+	op.key = rand()%MAX_KEY + 1;
+	return op;
 }
 
 void delete_generator(struct generator *g){
