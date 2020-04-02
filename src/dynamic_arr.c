@@ -1,3 +1,10 @@
+/*
+ * AUTHORSHIP
+ * AUTHOR: KARL FLORES
+ * COMP90077 Assignment 1
+ *
+ */
+
 #include "dynamic_arr.h"
 
 struct dynamic_array *create_dynamic_array(){

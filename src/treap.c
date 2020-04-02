@@ -1,3 +1,10 @@
+/*
+ * AUTHORSHIP
+ * AUTHOR: KARL FLORES 
+ * COMP90077 Assignment 1 
+ *
+ */
+
 #include "treap.h"
 
 // create the treap 

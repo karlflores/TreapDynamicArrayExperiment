@@ -1,3 +1,10 @@
+/*
+ * AUTHORSHIP
+ * AUTHOR: KARL FLORES 
+ * COMP90077 Assignment 1 
+ *
+ */
+
 #ifndef _DATA_H
 #define _DATA_H
 

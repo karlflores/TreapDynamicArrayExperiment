@@ -1,3 +1,10 @@
+/*
+ * AUTHORSHIP
+ * AUTHOR: KARL FLORES
+ * COMP90077 Assignment 1
+ *
+ */
+
 #include "generator.h"
 
 struct generator *create_generator(void){

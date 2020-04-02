@@ -1,3 +1,10 @@
+/*
+ * AUTHORSHIP
+ * AUTHOR: KARL FLORES 
+ * COMP90077 Assignment 1 
+ *
+ */
+
 #include <stdio.h> 
 #include <stdlib.h> 
 #include <assert.h> 

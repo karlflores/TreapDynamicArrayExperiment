@@ -1,3 +1,10 @@
+/*
+ * AUTHORSHIP
+ * AUTHOR: KARL FLORES 
+ * COMP90077 Assignment 1 
+ *
+ */
+
 #include "dynamic_arr.h"
 #include "treap.h"
 #include "generator.h"

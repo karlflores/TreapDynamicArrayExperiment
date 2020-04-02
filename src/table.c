@@ -1,5 +1,23 @@
+/*
+ * AUTHORSHIP
+ * AUTHOR: KARL FLORES
+ * COMP90077 Assignment 1
+ *
+ */
+
 #include "hashtable.h"
 
+/*
+ * Implementation of a hash table based on the functions definitions in hashtable.h
+ * this assumes that the items that we are inserting in to the hash table are in
+ * the range [0,MAX_TABLE_SIZE], and all ids are unique.  
+ *  
+ */
+
+
+// Constructor
+// param: load_factor (0,100) - how full the table should be 
+// before we try to resize 
 struct hash_table *create_hash_table(int load_factor){
 	// find the max elements based on the load factor; 
 	struct hash_table *ht = (struct hash_table *)malloc(sizeof(struct hash_table));
@@ -10,6 +28,8 @@ struct hash_table *create_hash_table(int load_factor){
 	ht->table_size = MAX_TABLE_SIZE;
 	ht->load_factor = load_factor;
 	ht->n_filled = 0;
+
+	// hash table interfaces 
 	ht->delete = &ht_del;
 	ht->set = &ht_set;
 	ht->get = &ht_get;
@@ -27,19 +47,21 @@ struct hash_table *create_hash_table(int load_factor){
 	return ht;
 }
 
+// insert an element -- just use the id as an index into the table 
 void ht_set(struct hash_table *ht, struct data_element *data){
 	if(ht->n_filled > MAX_TABLE_SIZE-1) return;
-	//printf("HT SIZE: %d\n",ht->n_filled);
 	ht->table[data->id].data = data;
 	ht->table[data->id].status = FILLED;
 	ht->n_filled++;
 }
 
+// retrieve an element based on the index 
 int ht_get(struct hash_table *ht, int id){
 	if(ht->table[id].status == EMPTY || ht->table[id].status == DELETED) return -1;
 	return ht->table[id].data->key;
 }
 
+// delete an element based on the index 
 int ht_del(struct hash_table *ht, int id){
 	if(ht->table[id].status == FILLED){
 		// remove this cell;
@@ -53,6 +75,7 @@ int ht_del(struct hash_table *ht, int id){
 
 }
 
+// delete the entire hash table 
 void delete_hash_table(struct hash_table *ht){
 	// iterate through all elements in the hash table 
 	for(int i = 0 ; i < ht->table_size ; i++){
@@ -60,25 +83,4 @@ void delete_hash_table(struct hash_table *ht){
 	}
 	free(ht->table);
 	free(ht);
-}
-
-int primary_hash(struct hash_table *ht, int id){
-	// get the current table size and return the data id mod it
-	return id % ht->table_size;
-}
-
-int secondary_hash(int id){
-	return id % SECOND_PRIME + 1;
-}
-
-int is_prime(int n){
-	for(int i = 2 ; i <= sqrt(n) ; i++){
-		if(n % i == 0) return FALSE;
-	}
-	return TRUE;
-}
-
-int next_prime(int n){
-	while(!is_prime(n++));
-	return n-1;
 }

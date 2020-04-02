@@ -1,3 +1,11 @@
+/*
+ * AUTHORSHIP
+ * AUTHOR: KARL FLORES 
+ * COMP90077 Assignment 1 
+ *
+ */
+
+
 #include "data.h"
 
 struct data_element *create_data_element(int id, int key){
