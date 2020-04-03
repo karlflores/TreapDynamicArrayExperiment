@@ -37,27 +37,40 @@ struct hash_table{
 	int table_size;
 
 	// interface functions 	
+	
+	/* set function 
+	 * param hash_table : hash table to insert the element into 
+	 * param data_element : element to insert
+	 */
 	void (*set)(struct hash_table *,struct data_element *);
+
+	/* get function 
+	 * param hash_table : hash table to search 
+	 * param int : id to search for 
+	 * return int : -1 if not found, search_key if element with id is found 
+	 */
 	int (*get)(struct hash_table *,int);
+
+	/* delete function
+	 * param hash_table : hash table to search 
+	 * param int : id of element to delete 
+	 * return: 0 if delete is unsuccessful, 1 if delete is successful 
+	 */
 	int (*delete)(struct hash_table *,int);
 };
 
 
 // create and delete a hash table 
+
+/* create a hash table with a given load capacity
+ * param int: load capacity (%) from 0-100
+ * return : pointer to the created hash table, delete_hash_table needs to be called
+ * after use 
+ */
 struct hash_table *create_hash_table(int load_capacity);
+
+/* delete a hash table after its use 
+ * param hash_table : address of hash table to delete 
+ */
 void delete_hash_table(struct hash_table *ht);
-
-// hash functions 
-int primary_hash(struct hash_table *ht, int id);
-int secondary_hash(int id); 
-
-// hash function operations 
-void ht_set(struct hash_table *ht, struct data_element *data);
-int ht_del(struct hash_table *ht, int id);
-int ht_get(struct hash_table *ht, int id); 
-
-
-// util prime functions 
-int next_prime(int n);
-int is_prime(int n);
 

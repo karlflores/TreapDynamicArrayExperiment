@@ -6,6 +6,19 @@
  */
 
 #include "hashtable.h"
+// hash functions 
+int primary_hash(struct hash_table *ht, int id);
+int secondary_hash(int id); 
+
+// hash function operations 
+void ht_set(struct hash_table *ht, struct data_element *data);
+int ht_del(struct hash_table *ht, int id);
+int ht_get(struct hash_table *ht, int id); 
+
+
+// util prime functions 
+int next_prime(int n);
+int is_prime(int n);
 
 /* 
  * THIS IS AN IMPLEMENTATION OF A HASH TABLE USING DOUBLE HASHING. This can be interchanged with

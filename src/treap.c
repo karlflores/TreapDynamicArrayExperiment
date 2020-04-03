@@ -7,6 +7,25 @@
 
 #include "treap.h"
 
+// rotation functions 
+struct node *rotate_left(struct node *root);
+struct node *rotate_right(struct node *root);
+
+// node functions
+struct node *insert_node(struct node *root, struct data_element *data);
+struct node *delete_node(struct node *root, int key);
+struct node *create_node(struct data_element *data);
+int search_node(struct node *root, int key);
+void delete_treap_nodes(struct node *root);
+
+
+// wrapper interfaces for the treap 
+void treap_delete(struct treap *treap, int key);
+int treap_search(struct treap *treap, int key);
+void treap_insert(struct treap *treap, struct data_element *data);
+
+/* UTILS */
+void inorder(struct node *root);
 // create the treap 
 struct treap *create_treap(){
 	struct treap *treap = (struct treap *)malloc(sizeof(struct treap));

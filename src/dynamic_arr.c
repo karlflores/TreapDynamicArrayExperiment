@@ -7,6 +7,14 @@
 
 #include "dynamic_arr.h"
 
+// implementations of each of the operations on the dynamic array 
+void da_insert(struct dynamic_array *array, struct data_element *data_element);
+void push_back(struct dynamic_array *array, struct data_element *data_element);
+int search_idx(struct dynamic_array *array, int key);
+struct data_element *da_search(struct dynamic_array *array, int key);
+void da_delete(struct dynamic_array *array, int key);
+void swap(struct data_element **a, struct data_element **b);
+
 struct dynamic_array *create_dynamic_array(){
 	// start off with one element
 	struct dynamic_array *array = (struct dynamic_array*)malloc(sizeof(struct dynamic_array));

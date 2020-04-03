@@ -32,8 +32,20 @@ struct generator{
 	int *data_generated;
 
 	// generator interfaces -- all return a struct containing the operaiton information 
+	
+	/* generate an insertion 
+	 * param generator : generator to generate the element from 
+	 */
 	struct operation (*gen_insertion)(struct generator *);
+
+	/* generate a search operation 
+	 * param generator : generator to generate search operation 
+	 */
 	struct operation (*gen_search)(struct generator *);
+
+	/* generate a deletion operation 
+	 * param generator : generator to generate deletion operation 
+	 */
 	struct operation (*gen_deletion)(struct generator*);
 };
 
@@ -45,9 +57,3 @@ struct generator *create_generator();
 // param: g - pointer to the generator you want to delete 
 void delete_generator(struct generator *g);
 
-// implementations of each operation, need to pass in the generator you want to use 
-// into each of these functions 
-struct data_element *gen_element(struct generator *g);
-struct operation  gen_deletion(struct generator *g);
-struct operation gen_insertion(struct generator *g);
-struct operation gen_search(struct generator *g);

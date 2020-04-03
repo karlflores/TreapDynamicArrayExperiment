@@ -21,26 +21,35 @@ struct dynamic_array{
 	
 	// insert -- pass in the element you want to insert and the dynamic array you
 	// want to insert into 
+	/*  insert function 
+	 *  param dyanmic_array: dynamic array to insert into
+	 *  param data_element : element to insert
+	 */
 	void (*insert)(struct dynamic_array*, struct data_element*);
 
-	// delete an element with the corresponding search key 
+	/* delete an element with the corresponding search key 
+	 * param dynamic_array : array to delete element from
+	 * param int : search key of the element to delete
+	 */
 	void (*delete)(struct dynamic_array*, int);
 
-	// search for an element with the corresponding search key 
+	/* search for an element with the corresponding search key 
+	 * param dynamic array : array to search from 
+	 * param int : search key to search for 
+	 */
 	struct data_element* (*search)(struct dynamic_array*, int);
 
 };
 
 // constructor 
+/* Create a dynamic array 
+ * return: pointer to an empty dynamic array 
+ * needs to be freed after use 
+ */
 struct dynamic_array *create_dynamic_array();
 
 // delete the dynamic array 
+/* Delete a dynamic array 
+ * param array: pointer to a dynamic array 
+ */
 void delete_dynamic_array(struct dynamic_array *array);
-
-// implementations of each of the operations on the dynamic array 
-void da_insert(struct dynamic_array *array, struct data_element *data_element);
-void push_back(struct dynamic_array *array, struct data_element *data_element);
-int search_idx(struct dynamic_array *array, int key);
-struct data_element *da_search(struct dynamic_array *array, int key);
-void da_delete(struct dynamic_array *array, int key);
-void swap(struct data_element **a, struct data_element **b);

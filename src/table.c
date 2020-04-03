@@ -6,6 +6,14 @@
  */
 
 #include "hashtable.h"
+// hash functions 
+int primary_hash(struct hash_table *ht, int id);
+int secondary_hash(int id); 
+
+// hash function operations 
+void ht_set(struct hash_table *ht, struct data_element *data);
+int ht_del(struct hash_table *ht, int id);
+int ht_get(struct hash_table *ht, int id); 
 
 /*
  * Implementation of a hash table based on the functions definitions in hashtable.h

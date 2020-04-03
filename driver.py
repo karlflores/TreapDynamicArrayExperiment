@@ -70,7 +70,7 @@ def plot(d1, d2):
     l1 = plt.plot(x_1_mean, y_1_mean,'--o',label="treap");
     l2 = plt.plot(x_2_mean,y_2_mean,'--x',label="dynamic array")
     plt.ylabel("time (ms)")
-    plt.title("Experiment 1")
+    plt.title("Experiment 4")
     plt.xlabel("Operation Sequence Length")
     plt.legend(loc='upper left')
     plt.ylim(bottom=0)
@@ -87,7 +87,7 @@ def runAllRuns(params,threadCount=4):
 def execExpr(param):
     #print("launching experiment")
     sleep(1)
-    process = subprocess.Popen(["./ds_expr", str(param), "1"],stdout=PIPE)
+    process = subprocess.Popen(["./ds_expr", str(param), "4"],stdout=PIPE)
     (output, err) = process.communicate()
     process.wait()
     print('Output {}\r'.format(str(output.decode("utf-8")), end='\r'))
@@ -109,7 +109,8 @@ if __name__ == "__main__":
     print('Experiment Driver')
     print("#"*42)
     subprocess.call(["make"])
-    size = [10000,20000,30000,50000,80000,100000,200000,300000,500000,600000,800000,900000,1000000,1100000,1200000,1300000,1400000,1500000]
+    #size = [10000,20000,30000,50000,80000,100000,200000,300000,500000,600000,800000,900000,1000000,1100000,1200000,1300000,1400000,1500000]
+    size = [100000,200000,500000,800000,1000000]
     #size = [1,5,10,50,100]
 
     result_treap = {} 

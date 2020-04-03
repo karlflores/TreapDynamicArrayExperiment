@@ -18,11 +18,27 @@
 #define MAX_PRIORITY 100000000
 
 struct treap{
+	// the root of the tree
 	struct node *root;
 	
 	// treap interface functions  	
+
+	/* insert function 
+	 * param treap: address of treap to insert into 
+	 * param data_element: address of data element to insert into the treap
+	 */
 	void (*insert)(struct treap *,struct data_element*);
+
+	/* delete function 
+	 * param treap: address of treap to delete from  
+	 * param int: search key of element to delete 
+	 */
 	void (*delete)(struct treap *,int);
+
+	/* search function 
+	 * param treap: address of treap to search 
+	 * param int: search key of element to search 
+	 */
 	int (*search)(struct treap *,int);	
 
 };
@@ -37,24 +53,15 @@ struct node {
 
 };
 
-struct node *rotate_left(struct node *root);
-struct node *rotate_right(struct node *root);
-
-// node functions
-struct node *insert_node(struct node *root, struct data_element *data);
-struct node *delete_node(struct node *root, int key);
-struct node *create_node(struct data_element *data);
-int search_node(struct node *root, int key);
-void delete_treap_nodes(struct node *root);
-
 // functions to create and delete a treap from memory 
+
+/*Create a treap 
+ * return : pointer to a treap -- needs to be deleted after use 
+ */
+
 struct treap *create_treap();
+
+/* Delete a treap that has been allocated 
+ * param treap : address of treap to delete
+ */
 void delete_treap(struct treap *treap);
-
-// wrapper interfaces for the treap 
-void treap_delete(struct treap *treap, int key);
-int treap_search(struct treap *treap, int key);
-void treap_insert(struct treap *treap, struct data_element *data);
-
-/* UTILS */
-void inorder(struct node *root);

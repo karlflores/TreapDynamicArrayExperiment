@@ -6,6 +6,12 @@
  */
 
 #include "generator.h"
+// implementations of each operation, need to pass in the generator you want to use 
+// into each of these functions 
+struct data_element *gen_element(struct generator *g);
+struct operation  gen_deletion(struct generator *g);
+struct operation gen_insertion(struct generator *g);
+struct operation gen_search(struct generator *g);
 
 struct generator *create_generator(void){
 	struct generator *gen = (struct	generator *)malloc(sizeof(struct generator));

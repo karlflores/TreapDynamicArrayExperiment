@@ -18,5 +18,11 @@ struct data_element{
 	int key;
 };
 
+/*
+ * Create a data element, needs to be freed after use 
+ * param id: id of the element 
+ * param key: key of the element
+ * return: pointer to the element (id,key)
+ */
 struct data_element *create_data_element(int id, int key);
 #endif
